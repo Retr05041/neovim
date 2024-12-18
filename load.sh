@@ -11,5 +11,4 @@ fi
 
 mkdir $HOME/.config/nvim
 
-cp -r init.lua lua stylua.toml $HOME/.config/nvim
-cp -r snippets $HOME/.config/nvim/lua
+cp -r init.lua lua snippets stylua.toml $HOME/.config/nvim
