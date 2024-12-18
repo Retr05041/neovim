@@ -11,3 +11,7 @@ vim.keymap.set({ "n", "v" }, "<leader>gp", '"+p<CR>', { noremap = true, silent =
 
 -- Open file explorer faster
 vim.keymap.set("n", "<leader>t", vim.cmd.Ex)
+
+-- LSP
+vim.keymap.set("n", "F", vim.lsp.buf.format, {})
+vim.keymap.set("n", "K", vim.lsp.buf.hover, {})

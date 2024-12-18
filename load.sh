@@ -6,9 +6,10 @@ if [[ -d "$HOME/.config/nvim" ]]; then
     echo "Ok, goodbye!"
     exit 1
   fi
+  rm -r $HOME/.config/nvim
 fi
 
-rm -r $HOME/.config/nvim
 mkdir $HOME/.config/nvim
 
 cp -r init.lua lua stylua.toml $HOME/.config/nvim
+cp -r snippets $HOME/.config/nvim/lua

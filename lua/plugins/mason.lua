@@ -1,12 +1,80 @@
+-- Handles all LSP related activity
 return {
-  -- add any tools you want to have installed below
-  "williamboman/mason.nvim",
-  opts = {
-    ensure_installed = {
-      "stylua",
-      "shellcheck",
-      "shfmt",
-      "flake8",
-    },
+  "neovim/nvim-lspconfig",
+  dependencies = {
+    -- LSP stuff
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "L3MON4D3/LuaSnip", -- Custom snippets
+    "j-hui/fidget.nvim", -- For nice UI
   },
+
+  config = function()
+    local cmp = require("cmp")
+    local cmp_lsp = require("cmp_nvim_lsp")
+    local capabilities =
+      vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp_lsp.default_capabilities())
+
+    -- Setup dependencies
+    require("luasnip.loaders.from_snipmate").lazy_load()
+    require("fidget").setup({})
+    require("mason").setup()
+    require("mason-lspconfig").setup({
+      ensure_installed = {
+        "lua_ls", -- Lua
+        "bashls", -- Bash
+        "gopls", -- Go
+        "pyright", -- Python
+        "rust_analyzer", -- Rust
+        "taplo", -- TOML
+        "clangd", -- C
+        "hls", -- Haskell
+        "texlab", -- Latex
+      },
+      handlers = {
+        function(server_name) -- default handler (optional)
+          require("lspconfig")[server_name].setup({
+            capabilities = capabilities,
+          })
+        end,
+      },
+    })
+
+    -- Select behavior variable
+    local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
+    -- Setup custom command for inputing either snippet or lsp
+    cmp.setup({
+      snippet = {
+        expand = function(args)
+          require("luasnip").lsp_expand(args.body)
+        end,
+      },
+      mapping = cmp.mapping.preset.insert({
+        ["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
+        ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
+        ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-Space>"] = cmp.mapping.complete(),
+      }),
+      sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+        { name = "luasnip" }, -- For luasnip users.
+      }, {
+        { name = "buffer" },
+      }),
+    })
+
+    -- Configuring diagnostic bar
+    vim.diagnostic.config({
+      -- update_in_insert = true,
+      float = {
+        focusable = false,
+        style = "minimal",
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+      },
+    })
+  end,
 }
