@@ -17,14 +17,14 @@ return {
       function()
         require("harpoon"):list():add()
       end,
-      desc = "Harpoon Select 1",
+      desc = "Add file to harpoon",
     },
     {
       "<C-e>",
       function()
-        require("harpoon.ui"):toggle_quick_menu(require("harpoon"):list())
+        require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
       end,
-      desc = "Harpoon Select 1",
+      desc = "See harpooned files",
     },
     {
       "<C-h>",
