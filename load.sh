@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ -d "$HOME/.config/nvim" ]]; then
-  read -p "Config file found, replace? [y/n]: " response
+  read -p "Neovim config file found, replace? [y/n]: " response
   if ! [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
     echo "Ok, goodbye!"
     exit 1
