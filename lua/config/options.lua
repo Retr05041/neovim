@@ -4,3 +4,5 @@
 vim.opt.termguicolors = true
 
 vim.g.lazyvim_cmp = "nvim-cmp"
+
+vim.g.lazyvim_check_order = false
